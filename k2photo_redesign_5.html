@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kensuke Takahashi | K2 PHOTO — 北海道の自然写真</title>
+<meta name="description" content="札幌を拠点に北海道の自然や生態系を撮り続ける写真家・高橋健介(K2 PHOTO)の作品集。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --snow:#F3F5F4;        /* 雪 — 背景 */
+  --ink:#141D1C;         /* 針葉樹の墨 — 文字・暗部 */
+  --ink-deep:#0E1514;    /* 夜の森 — マップ・フッター背景 */
+  --birch:#8E9A96;       /* 白樺の幹 — 補助テキスト・罫線 */
+  --lake:#5C93A8;        /* 青い湖 — アクセント */
+  --lake-bright:#7FB6C9; /* 湖・明 — 暗背景でのアクセント */
+  --line:rgba(20,29,28,.14);
+  --serif:'Shippori Mincho','Hiragino Mincho ProN',serif;
+  --sans:'Zen Kaku Gothic New','Hiragino Kaku Gothic ProN',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--snow);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.9;font-size:15px;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--lake);color:#fff}
+
+/* ---------- 共通 ---------- */
+.wrap{max-width:1200px;margin:0 auto;padding:0 6vw}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--lake);display:flex;align-items:center;gap:14px}
+.eyebrow::after{content:"";height:1px;width:56px;background:currentColor;opacity:.5}
+.sec-title{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.4vw,40px);letter-spacing:.06em;margin:14px 0 8px}
+.sec-lede{color:var(--birch);max-width:34em;font-size:14px}
+section{padding:110px 0}
+.dark{background:var(--ink-deep);color:var(--snow)}
+.dark .sec-lede{color:rgba(243,245,244,.55)}
+.dark .eyebrow{color:var(--lake-bright)}
+.mono{font-family:var(--mono)}
+
+/* 出現アニメーション */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+
+/* ---------- ナビ ---------- */
+nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:22px 6vw;transition:background .4s ease,box-shadow .4s ease}
+nav.solid{background:rgba(14,21,20,.9);backdrop-filter:blur(10px)}
+.brand{font-family:var(--serif);color:#fff;font-size:17px;letter-spacing:.24em}
+.brand small{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.3em;color:var(--lake-bright);margin-top:2px}
+.nav-links{display:flex;gap:34px;list-style:none}
+.nav-links a{color:rgba(243,245,244,.85);font-size:12.5px;letter-spacing:.14em;position:relative;padding:4px 0}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--lake-bright);transition:width .3s ease}
+.nav-links a:hover::after,.nav-links a:focus-visible::after{width:100%}
+.nav-links a span{font-family:var(--mono);font-size:9px;color:var(--lake-bright);margin-left:6px;letter-spacing:.1em}
+.menu-btn{display:none;background:none;border:1px solid rgba(255,255,255,.35);color:#fff;font-family:var(--mono);font-size:10px;letter-spacing:.2em;padding:8px 14px;cursor:pointer}
+@media(max-width:880px){
+  .nav-links{position:fixed;inset:0;background:rgba(14,21,20,.97);flex-direction:column;justify-content:center;align-items:center;gap:30px;transform:translateY(-102%);transition:transform .45s ease}
+  .nav-links.open{transform:none}
+  .nav-links a{font-size:17px}
+  .menu-btn{display:block;position:relative;z-index:60}
+}
+
+/* ---------- ヒーロー ---------- */
+.hero{position:relative;height:100svh;min-height:620px;display:flex;align-items:flex-end;color:#fff;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:url('https://gallery.northfinder.jp/wp-content/uploads/2018/12/Kensuke_Takahashi-0005.jpg') center 38%/cover no-repeat;transform:scale(1.06);animation:heroIn 2.6s ease forwards}
+@keyframes heroIn{to{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.hero-bg{animation:none;transform:none}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(14,21,20,.82) 0%,rgba(14,21,20,.25) 40%,rgba(14,21,20,.30) 100%)}
+.hero-inner{position:relative;z-index:2;width:100%;padding:0 6vw 9vh}
+.hero-coord{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--lake-bright);margin-bottom:18px}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(38px,6.5vw,84px);letter-spacing:.08em;line-height:1.2}
+.hero h1 .en{display:block;font-size:clamp(12px,1.3vw,15px);font-family:var(--mono);font-weight:300;letter-spacing:.42em;color:rgba(255,255,255,.75);margin-top:16px;text-transform:uppercase}
+.hero-lede{margin-top:26px;max-width:36em;font-size:14.5px;color:rgba(243,245,244,.88);font-weight:300}
+.hero-cta{display:inline-flex;align-items:center;gap:12px;margin-top:34px;border:1px solid rgba(255,255,255,.45);padding:13px 26px;font-size:12.5px;letter-spacing:.22em;transition:background .3s ease,border-color .3s ease}
+.hero-cta:hover,.hero-cta:focus-visible{background:rgba(92,147,168,.35);border-color:var(--lake-bright)}
+.hero-cta svg{transition:transform .3s ease}
+.hero-cta:hover svg{transform:translateY(3px)}
+.hero-cap{position:absolute;right:6vw;bottom:9vh;z-index:2;text-align:right;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:rgba(255,255,255,.6);line-height:2}
+@media(max-width:680px){.hero-cap{display:none}}
+
+/* ---------- ギャラリー ---------- */
+.works-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:56px}
+.grid{columns:3;column-gap:22px}
+@media(max-width:980px){.grid{columns:2}}
+@media(max-width:600px){.grid{columns:1}}
+.work{break-inside:avoid;margin-bottom:22px;position:relative;cursor:pointer;overflow:hidden;background:var(--ink)}
+.work img{width:100%;transition:transform .8s ease,opacity .8s ease}
+.work:hover img,.work:focus-visible img{transform:scale(1.04);opacity:.55}
+.work-info{position:absolute;inset:auto 0 0 0;padding:22px;color:#fff;opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease}
+.work:hover .work-info,.work:focus-visible .work-info{opacity:1;transform:none}
+.work-info p{font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:#fff}
+.work:focus-visible{outline:2px solid var(--lake);outline-offset:3px}
+
+/* ---------- フィールドマップ ---------- */
+.fieldmap .sec-lede{margin-bottom:52px}
+.map-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:stretch}
+@media(max-width:980px){.map-layout{grid-template-columns:1fr;gap:40px}}
+.map-box{position:relative}
+#hokkaido{width:100%;height:auto;display:block}
+#hokkaido .coast{fill:rgba(243,245,244,.045);stroke:rgba(243,245,244,.4);stroke-width:1.1;stroke-linejoin:round}
+.mk{cursor:pointer}
+.mk circle.dot{fill:var(--lake-bright);transition:r .25s ease,fill .25s ease}
+.mk circle.halo{fill:none;stroke:var(--lake-bright);stroke-width:1;opacity:0}
+.mk:hover circle.dot{r:6}
+.mk.active circle.dot{fill:#fff;r:6}
+.mk.active circle.halo{opacity:.8;animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{r:6;opacity:.8}100%{r:20;opacity:0}}
+@media (prefers-reduced-motion:reduce){.mk.active circle.halo{animation:none;r:11;opacity:.5}}
+.mk text{fill:rgba(243,245,244,.62);font-family:var(--mono);font-size:10px;letter-spacing:.12em;pointer-events:none;opacity:0;transition:opacity .3s ease}
+.mk:hover text,.mk.active text{opacity:1}
+.map-note{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:rgba(243,245,244,.4);margin-top:14px}
+.map-panel{border-left:1px solid rgba(243,245,244,.16);padding-left:56px;display:flex;flex-direction:column}
+@media(max-width:980px){.map-panel{border-left:none;padding-left:0;border-top:1px solid rgba(243,245,244,.16);padding-top:36px}}
+.panel-loc{font-family:var(--serif);font-size:28px;font-weight:500;letter-spacing:.1em}
+.panel-loc small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.28em;color:var(--lake-bright);margin-top:6px;text-transform:uppercase}
+.panel-coord{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:rgba(243,245,244,.45);margin-top:10px}
+.panel-photos{margin-top:26px;display:grid;gap:20px}
+.panel-photos.two{grid-template-columns:1fr 1fr}
+.p-item{cursor:pointer}
+.p-item img{width:100%;aspect-ratio:3/2;object-fit:cover;opacity:0;animation:fadeUp .7s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.p-item img{animation:none;opacity:1}}
+.p-item h4{font-family:var(--serif);font-size:16px;font-weight:500;letter-spacing:.08em;margin-top:12px}
+.p-item p{font-size:12.5px;color:rgba(243,245,244,.6);margin-top:4px;line-height:1.8}
+.panel-count{margin-top:auto;padding-top:30px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:rgba(243,245,244,.35)}
+
+
+/* ---------- マップ切替タブ ---------- */
+.map-tabs{display:flex;gap:10px;margin:40px 0 34px}
+.tab-btn{background:none;border:1px solid rgba(243,245,244,.25);color:rgba(243,245,244,.65);font-family:var(--mono);font-size:11px;letter-spacing:.22em;padding:11px 22px;cursor:pointer;transition:all .3s ease;display:inline-flex;align-items:center;gap:10px}
+.tab-btn:hover{border-color:var(--lake-bright);color:#fff}
+.tab-btn.active{background:var(--lake);border-color:var(--lake);color:#fff}
+.tab-btn .badge{font-size:8.5px;letter-spacing:.18em;border:1px solid currentColor;padding:2px 6px;opacity:.75}
+.map-view{display:none}
+.map-view.show{display:grid}
+#world{width:100%;height:auto;display:block}
+#world .land{fill:rgba(243,245,244,.05);stroke:rgba(243,245,244,.3);stroke-width:.7;stroke-linejoin:round}
+.world-box{position:relative}
+.coming{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;pointer-events:none;text-align:center}
+.coming strong{font-family:var(--mono);font-weight:300;font-size:clamp(18px,2.6vw,30px);letter-spacing:.5em;color:rgba(243,245,244,.85);text-indent:.5em}
+.coming span{font-size:12px;color:rgba(243,245,244,.5);letter-spacing:.1em}
+.home-mk circle{fill:none;stroke:var(--lake-bright);stroke-width:1}
+.home-mk .c{fill:var(--lake-bright)}
+.home-mk text{fill:rgba(243,245,244,.55);font-family:var(--mono);font-size:11px;letter-spacing:.14em}
+.panel-empty{display:flex;flex-direction:column;justify-content:center;height:100%;gap:16px}
+.panel-empty p{font-size:13.5px;color:rgba(243,245,244,.6);max-width:26em}
+.panel-empty .mono-note{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:rgba(243,245,244,.35)}
+
+/* ---------- 経歴 ---------- */
+.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:start}
+@media(max-width:880px){.about-grid{grid-template-columns:1fr;gap:44px}}
+.portrait{position:relative}
+.portrait img{width:100%;max-width:420px;aspect-ratio:1/1;object-fit:cover;filter:grayscale(12%)}
+.portrait::after{content:"PORTRAIT — SAPPORO STUDIO";position:absolute;left:14px;bottom:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:#fff;background:rgba(14,21,20,.5);padding:4px 9px}
+.bio-name{font-family:var(--serif);font-size:30px;font-weight:500;letter-spacing:.12em;margin-top:10px}
+.bio-name span{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--lake);display:block;margin-top:8px}
+.bio-text{margin-top:26px;font-size:14.5px;color:#33403d}
+.bio-text + .bio-text{margin-top:16px}
+.facts{margin-top:44px;border-top:1px solid var(--line)}
+.fact{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:15px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.fact dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--birch);text-transform:uppercase;padding-top:3px}
+@media(max-width:520px){.fact{grid-template-columns:1fr;gap:2px}}
+
+/* ---------- 展示 ---------- */
+.exhibitions{border-top:1px solid var(--line)}
+.ex-list{margin-top:56px}
+.ex{display:grid;grid-template-columns:110px 1fr auto;gap:26px;align-items:baseline;padding:26px 0;border-bottom:1px solid var(--line);transition:padding-left .3s ease}
+.ex:first-child{border-top:1px solid var(--line)}
+.ex:hover{padding-left:14px}
+.ex-year{font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--lake)}
+.ex-name{font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:.08em}
+.ex-venue{font-size:12.5px;color:var(--birch);letter-spacing:.06em}
+@media(max-width:600px){.ex{grid-template-columns:80px 1fr}.ex-venue{grid-column:2}}
+
+/* ---------- 連絡先 ---------- */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:56px}
+@media(max-width:880px){.contact-grid{grid-template-columns:1fr}}
+.c-item{padding:26px 0;border-top:1px solid rgba(243,245,244,.16)}
+.c-item dt{font-family:var(--mono);font-size:10px;letter-spacing:.28em;color:var(--lake-bright);text-transform:uppercase}
+.c-item dd{margin-top:10px;font-size:17px;letter-spacing:.04em}
+.c-item dd a{border-bottom:1px solid rgba(243,245,244,.3);padding-bottom:2px;transition:border-color .3s ease,color .3s ease}
+.c-item dd a:hover{color:var(--lake-bright);border-color:var(--lake-bright)}
+.c-item dd small{display:block;font-size:12px;color:rgba(243,245,244,.5);margin-top:6px}
+.contact-map{position:relative;overflow:hidden;background:var(--ink)}
+.contact-map iframe{width:100%;height:100%;min-height:340px;border:0;display:block;filter:grayscale(1) contrast(.96)}
+.contact-map figcaption{position:absolute;left:16px;bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:#fff;background:rgba(14,21,20,.72);padding:5px 10px;pointer-events:none}
+.contact-map .map-open{position:absolute;right:14px;bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:#fff;background:rgba(14,21,20,.72);padding:6px 11px;transition:background .3s ease,color .3s ease}
+.contact-map .map-open:hover{background:var(--lake);color:#fff}
+footer{background:var(--ink-deep);color:rgba(243,245,244,.45);padding:34px 6vw;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;border-top:1px solid rgba(243,245,244,.1)}
+
+/* ---------- ライトボックス ---------- */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(10,15,14,.94);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.lb.open{opacity:1;pointer-events:auto}
+.lb-inner{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:34px;align-items:end;max-width:1160px;width:92vw;max-height:86vh}
+@media(max-width:880px){.lb-inner{grid-template-columns:1fr;gap:22px;overflow-y:auto}}
+.lb-img{max-width:100%;max-height:82vh;object-fit:contain;margin:0 auto}
+.lb-meta{color:#fff}
+.lb-meta h3{font-family:var(--serif);font-size:26px;font-weight:500;letter-spacing:.1em}
+.lb-loc{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--lake-bright);margin-top:12px}
+.lb-desc{margin-top:18px;font-size:13.5px;color:rgba(243,245,244,.78);line-height:2}
+.lb-idx{font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:rgba(243,245,244,.55)}
+.lb-btn{position:absolute;background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.2em;padding:14px;transition:color .3s ease}
+.lb-btn:hover{color:var(--lake-bright)}
+.lb-close{top:20px;right:24px;font-size:14px}
+.lb-prev{left:12px;top:50%;transform:translateY(-50%)}
+.lb-next{right:12px;top:50%;transform:translateY(-50%)}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="brand" href="#top">K2 PHOTO<small>KENSUKE TAKAHASHI</small></a>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">MENU</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#works">作品<span>WORKS</span></a></li>
+    <li><a href="#map">撮影地<span>FIELD MAP</span></a></li>
+    <li><a href="#about">経歴<span>ABOUT</span></a></li>
+    <li><a href="#exhibitions">展示<span>EXHIBITIONS</span></a></li>
+    <li><a href="#contact">連絡先<span>CONTACT</span></a></li>
+  </ul>
+</nav>
+
+<!-- ヒーロー:作品そのものを最初に見せる -->
+<header class="hero" id="top">
+  <div class="hero-bg" role="img" aria-label="高橋健介の作品写真"></div>
+  <div class="hero-inner">
+    <p class="hero-coord">43.0621°N&nbsp;&nbsp;141.3544°E — SAPPORO, HOKKAIDO</p>
+    <h1>高橋 健介<span class="en">Kensuke Takahashi — Nature Photographer</span></h1>
+    <p class="hero-lede">札幌を拠点に、北海道の自然と生態系を撮り続けています。</p>
+    <a class="hero-cta" href="#works">作品を見る
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M2 7l4 4 4-4" stroke="currentColor" stroke-width="1.2"/></svg>
+    </a>
+  </div>
+  <p class="hero-cap">K2 PHOTO est. 2010</p>
+</header>
+
+<!-- 作品 -->
+<section id="works">
+  <div class="wrap">
+    <div class="works-head rv">
+      <div>
+        <p class="eyebrow">Works</p>
+        <h2 class="sec-title" id="worksTitle">十七の風景</h2>
+        <p class="sec-lede">写真を選ぶと、拡大してご覧いただけます。</p>
+      </div>
+      <p class="mono" id="worksCount" style="font-size:10.5px;letter-spacing:.2em;color:var(--birch)">2010 — PRESENT / HOKKAIDO</p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- フィールドマップ -->
+<section class="dark fieldmap" id="map">
+  <div class="wrap">
+    <div class="rv">
+      <p class="eyebrow">Field Map</p>
+      <h2 class="sec-title">撮影地をたどる</h2>
+      <p class="sec-lede">北海道と世界、ふたつの地図。ポイントを選ぶと、その撮影地の作品が横に表示されます。</p>
+    </div>
+    <div class="map-tabs rv" role="tablist" aria-label="地図の切り替え">
+      <button class="tab-btn active" id="tabHokkaido" role="tab" aria-selected="true" aria-controls="viewHokkaido">北海道&nbsp;HOKKAIDO</button>
+      <button class="tab-btn" id="tabWorld" role="tab" aria-selected="false" aria-controls="viewWorld">世界&nbsp;WORLD<span class="badge" id="worldBadge">COMING SOON</span></button>
+    </div>
+    <div class="map-layout map-view show rv" id="viewHokkaido" role="tabpanel">
+      <div class="map-box">
+        <svg id="hokkaido" viewBox="0 0 700 580" role="group" aria-label="北海道の撮影地マップ"></svg>
+        <p class="map-note">※ 海岸線は簡略化して描画しています</p>
+      </div>
+      <div class="map-panel" id="panel" aria-live="polite"></div>
+    </div>
+    <div class="map-layout map-view" id="viewWorld" role="tabpanel">
+      <div class="map-box world-box">
+        <svg id="world" viewBox="0 0 1000 440" role="group" aria-label="世界の撮影地マップ"></svg>
+        <div class="coming" id="worldComing"><strong>COMING SOON</strong><span>海外での撮影記録は、現在準備中です。</span></div>
+        <p class="map-note">※ 海岸線は簡略化して描画しています(Natural Earth を基に作成)</p>
+      </div>
+      <div class="map-panel" id="worldPanel" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 経歴 -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <figure class="portrait rv">
+        <img src="https://gallery.northfinder.jp/wp-content/uploads/2018/12/bc8a23dbb915f2bdfd5b9260a3fd1f2f.jpg" alt="写真家・高橋健介のポートレート" loading="lazy">
+      </figure>
+      <div class="rv">
+        <p class="eyebrow">About</p>
+        <h2 class="bio-name">高橋 健介<span>KENSUKE TAKAHASHI</span></h2>
+        <p class="bio-text">1976年札幌市生まれ。2000年、東海大学芸術工学部卒業。撮影会社での勤務を経て2004年にフリーランスとなり、2010年に写真事務所 K2 PHOTO を設立。</p>
+        <p class="bio-text">北海道の自然や生態系を主な撮影対象としています。</p>
+        <dl class="facts">
+          <div class="fact"><dt>Base</dt><dd>札幌市中央区宮の森</dd></div>
+          <div class="fact"><dt>Career</dt><dd>2004年フリーランス開始 / 2010年 K2 PHOTO 設立</dd></div>
+          <div class="fact"><dt>Subject</dt><dd>北海道の自然や生態系</dd></div>
+          <div class="fact"><dt>Exhibitions</dt><dd>個展4回(2011–2016、新さっぽろギャラリー)</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 展示 -->
+<section class="exhibitions" id="exhibitions">
+  <div class="wrap">
+    <div class="rv">
+      <p class="eyebrow">Exhibitions</p>
+      <h2 class="sec-title">写真展</h2>
+      <p class="sec-lede">これまでに開催した個展。いずれも札幌・新さっぽろギャラリーにて。</p>
+    </div>
+    <div class="ex-list rv">
+      <div class="ex"><span class="ex-year">2016</span><span class="ex-name">「環」</span><span class="ex-venue">新さっぽろギャラリー</span></div>
+      <div class="ex"><span class="ex-year">2013</span><span class="ex-name">「HORIZONTAL GRACE」</span><span class="ex-venue">新さっぽろギャラリー</span></div>
+      <div class="ex"><span class="ex-year">2012</span><span class="ex-name">「roots of tree」</span><span class="ex-venue">新さっぽろギャラリー</span></div>
+      <div class="ex"><span class="ex-year">2011</span><span class="ex-name">「Re+Creation」</span><span class="ex-venue">新さっぽろギャラリー</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 連絡先 -->
+<section class="dark" id="contact">
+  <div class="wrap">
+    <div class="rv">
+      <p class="eyebrow">Contact</p>
+      <h2 class="sec-title">撮影・展示のご相談</h2>
+      <p class="sec-lede">作品の使用、撮影のご依頼、展示のご相談は、メールまたはお電話でお気軽にご連絡ください。</p>
+    </div>
+    <div class="contact-grid rv">
+      <dl>
+        <div class="c-item"><dt>Email</dt><dd><a href="mailto:k2photo@ray.ocn.ne.jp">k2photo@ray.ocn.ne.jp</a></dd></div>
+        <div class="c-item"><dt>Phone</dt><dd><a href="tel:09059551789">090-5955-1789</a></dd></div>
+        <div class="c-item"><dt>Studio</dt><dd>〒064-0952<br>札幌市中央区宮の森2条16丁目6-16 貝沼ビル F1<small>43.0621°N 141.3544°E</small></dd></div>
+      </dl>
+      <figure class="contact-map">
+        <iframe
+          src="https://www.google.com/maps?q=%E6%9C%AD%E5%B9%8C%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%AE%AE%E3%81%AE%E6%A3%AE2%E6%9D%A116%E4%B8%81%E7%9B%AE6-16&hl=ja&z=16&output=embed"
+          title="K2 PHOTO スタジオの地図(札幌市中央区宮の森2条16丁目6-16)"
+          loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <figcaption>K2 PHOTO — 宮の森</figcaption>
+        <a class="map-open" href="https://www.google.com/maps/search/?api=1&query=%E6%9C%AD%E5%B9%8C%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%AE%AE%E3%81%AE%E6%A3%AE2%E6%9D%A116%E4%B8%81%E7%9B%AE6-16+K2PHOTO" target="_blank" rel="noopener">GOOGLEマップで開く ↗</a>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 K2 PHOTO. All Rights Reserved.</span>
+  <span>43.0621°N 141.3544°E — SAPPORO, JAPAN</span>
+</footer>
+
+<!-- ライトボックス -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="作品の拡大表示">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="閉じる">✕ CLOSE</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="前の作品">← PREV</button>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="次の作品">NEXT →</button>
+  <div class="lb-inner">
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <div class="lb-meta">
+      <p class="lb-idx" id="lbIdx"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const WORLD_PATH='M312 414L315 416L319 417L318 419L315 419L314 418L313 419L311 420L308 420L306 419L303 418L299 416L296 415L293 411L295 412L299 414L302 415L304 414L305 411L307 410L309 411L310 412L312 414ZM337 406L340 407L339 408L335 409L334 408L331 410L330 408L333 406L336 407L337 406ZM695 401L691 402L691 400L691 399L691 398L693 399L696 399L696 400L695 401ZM904 373L907 374L908 374L910 373L912 374L912 377L911 378L911 381L910 380L908 382L907 382L906 382L904 379L904 377L902 375L902 373L904 373ZM981 374L983 374L984 376L981 380L981 383L976 384L974 389L970 392L966 391L963 389L968 384L971 382L975 379L978 376L980 372ZM985 359L987 360L989 363L993 364L996 364L994 368L991 369L991 371L989 375L986 375L987 372L983 369L985 367L985 363L984 360L981 356L981 353L984 356ZM964 315L963 316L962 315L960 313L958 312L956 309L956 308L957 308L958 309L960 311L963 313L964 315ZM639 288L640 293L639 295L638 295L638 298L637 302L635 310L632 320L629 324L625 325L622 322L620 317L621 312L622 311L624 306L622 303L623 298L625 296L627 295L630 293L633 289L634 288L636 284L638 284L639 288ZM899 288L902 290L904 292L904 296L905 298L906 303L910 306L913 309L915 312L917 315L919 316L921 321L925 325L925 329L927 333L926 338L925 342L923 347L920 351L919 356L917 360L917 363L912 364L908 366L904 366L903 364L899 367L895 366L891 365L888 360L886 357L885 356L883 355L882 354L883 351L881 351L878 355L876 352L872 348L869 346L865 344L856 346L850 346L845 349L843 352L839 352L835 352L831 354L829 354L826 355L821 353L820 351L821 350L822 346L820 341L820 338L818 335L817 331L815 327L815 326L817 328L816 324L815 322L816 319L816 316L817 316L821 313L824 310L826 310L830 309L831 308L836 307L838 304L840 301L842 297L844 299L844 296L845 294L848 291L849 290L850 289L853 289L857 292L860 292L861 288L862 286L865 283L868 283L866 281L869 281L873 283L876 284L878 283L880 284L879 287L878 288L876 291L879 294L882 296L885 298L887 300L891 300L892 297L894 292L893 290L893 286L894 284L895 281L896 279L897 282L898 284L899 287ZM835 277L834 277L830 275L833 275L835 276L835 277ZM846 277L843 278L843 277L843 276L844 274L847 273L847 272L850 272L852 272L853 271L854 272L853 272L850 274L847 275L846 277ZM828 271L829 271L830 271L831 273L828 273L826 274L824 274L825 272L827 272L828 271ZM841 271L841 272L837 273L833 273L833 272L835 271L837 272L839 272L841 271ZM944 271L944 272L942 271L941 270L939 268L940 268L941 269L943 270L944 271ZM802 266L807 267L808 265L813 267L814 269L818 270L821 271L818 273L815 271L813 271L810 271L807 271L804 269L802 269L801 270L796 268L795 267L793 267L795 264L798 264L800 265L801 265L802 266ZM933 267L932 267L931 266L930 264L929 261L930 261L930 262L931 263L932 265L933 266L933 267ZM922 262L921 263L920 263L919 264L917 265L916 265L914 264L912 263L912 262L915 263L916 262L917 261L917 263L919 262L920 261L921 260L921 258L923 258L923 259L923 260L922 262ZM862 255L863 257L861 256L859 256L857 256L855 256L856 254L859 254L862 255ZM925 259L925 260L924 258L923 257L922 256L921 255L919 254L919 253L921 254L922 255L923 255L924 257L925 258L925 259ZM873 249L876 256L882 250L887 252L892 253L902 257L905 260L910 264L908 266L911 270L915 274L917 276L919 277L917 279L914 277L909 275L906 270L900 270L898 273L895 274L889 271L886 271L883 269L884 265L878 259L871 256L869 258L869 256L870 253L871 252L866 250L863 248L868 246L873 249ZM848 241L844 244L836 244L833 247L837 248L842 249L840 250L840 255L842 260L841 263L841 259L837 260L836 256L834 254L835 263L832 262L832 256L830 254L831 249L833 243L838 242L845 242L848 241ZM857 242L857 244L856 244L855 246L857 248L856 248L855 246L854 242L854 239L855 238L856 240L857 240L857 242ZM794 264L789 261L784 257L780 252L776 245L774 239L770 235L765 230L766 228L773 232L777 235L782 239L786 243L787 247L790 249L791 252L795 255L794 264ZM827 239L827 243L826 248L824 253L822 257L818 256L815 255L810 255L806 254L804 249L803 244L805 239L809 239L811 236L816 233L818 230L823 226L825 223L827 226L831 228L829 230L827 232L828 238ZM851 219L851 223L850 222L849 226L845 226L845 222L842 222L839 223L840 220L843 218L846 218L849 217L851 216L851 219ZM726 226L723 226L722 224L721 219L723 214L725 216L726 218L727 221L727 225L726 226ZM844 213L843 214L843 216L842 217L840 215L841 214L841 213L842 211L843 211L843 213L845 210L844 213ZM829 216L825 219L827 217L829 215L831 213L832 209L832 212L831 214L829 216ZM849 207L849 210L847 210L847 211L848 213L847 213L847 211L846 211L845 209L847 209L847 208L845 206L848 206L849 207ZM837 187L840 187L839 189L840 194L838 198L840 200L844 202L845 204L842 204L841 204L836 202L835 200L835 199L834 198L833 194L834 190L837 187ZM318 188L317 189L315 189L313 189L313 187L314 187L316 187L317 187L318 188ZM286 189L286 190L284 189L282 188L283 187L284 187L285 187L286 187L288 188L288 189L286 189ZM298 183L301 183L305 183L306 185L308 185L310 187L308 187L306 187L304 188L303 188L301 189L299 188L296 188L293 187L296 187L299 186L298 184L297 183ZM806 186L804 188L802 187L802 184L803 183L806 182L808 182L808 183L807 185L806 186ZM279 174L282 174L286 177L288 178L290 180L294 181L292 183L288 182L286 181L283 180L281 177L277 177L273 175L273 174L268 175L267 176L264 176L266 174L269 173L271 172L276 173ZM285 170L284 171L283 169L282 168L283 166L284 166L285 169L285 170ZM837 174L835 176L834 173L834 171L835 168L837 166L839 167L838 168L837 174ZM874 138L874 139L873 141L872 140L870 141L869 142L868 141L868 140L869 138L871 138L872 137L874 138ZM596 133L594 134L594 135L592 136L590 136L590 135L591 135L592 134L594 134L596 133ZM566 133L567 134L570 134L572 134L572 135L573 134L573 135L569 135L565 134L566 133ZM543 125L542 127L543 128L542 130L540 129L538 129L535 127L535 125L538 126L541 125L543 125ZM526 116L527 118L527 122L526 122L524 123L523 122L523 118L523 116L524 117L526 116ZM892 128L891 132L886 136L877 140L875 136L867 139L867 141L863 148L862 144L859 140L864 138L868 134L877 133L882 129L887 125L889 118L893 115L894 122L892 128ZM527 113L526 115L524 114L524 112L524 111L526 110L527 113ZM900 106L902 107L904 106L904 109L900 110L898 113L893 111L892 114L889 114L888 111L890 109L893 109L894 104L894 102L898 105L900 106ZM323 99L325 99L328 99L326 100L325 101L322 99L321 98L322 97L323 99ZM328 91L327 91L323 90L321 88L322 88L325 89L328 90L328 91ZM157 93L156 93L151 92L150 91L148 89L147 89L144 88L143 86L146 86L148 87L151 87L152 88L153 90L156 91L157 93ZM344 86L344 88L345 89L349 89L351 93L353 94L353 99L350 98L349 95L344 98L344 95L335 96L337 93L338 91L342 84L346 83L344 86ZM131 75L134 75L133 79L136 81L135 81L133 80L132 78L130 77L130 76L130 75L131 75ZM899 86L902 91L898 90L896 95L899 98L899 100L897 98L895 101L894 98L894 95L894 92L895 89L895 85L893 82L894 78L896 76L895 75L896 74L897 76L898 79L898 82L899 86ZM481 81L476 83L472 82L475 79L473 76L477 73L479 72L481 72L484 74L483 76L483 78L481 81ZM535 70L534 73L531 71L530 70L534 69L535 70ZM75 66L72 67L71 66L70 65L73 63L74 63L76 63L77 64L75 66ZM492 61L492 64L494 66L494 69L499 74L501 79L504 81L504 84L498 86L492 86L487 87L484 87L491 84L485 82L487 79L491 77L490 73L486 72L486 70L484 68L484 63L488 61ZM40 57L38 57L37 57L35 56L38 55L40 56L40 57ZM273 48L269 50L267 50L267 49L269 47L273 47L273 48ZM23 45L25 45L26 45L29 46L31 46L31 47L29 47L27 47L26 46L23 46L23 45ZM263 39L264 40L265 40L267 41L270 42L273 43L273 44L276 44L277 45L275 46L271 45L269 44L266 45L262 47L261 45L258 45L260 44L260 41L261 39L263 39ZM460 36L459 38L462 40L459 43L451 45L448 46L445 45L437 44L440 43L433 41L438 41L438 40L432 39L434 37L439 36L443 39L447 37L451 38L455 36L460 36ZM289 34L286 34L285 33L287 31L289 31L291 31L291 33L289 34ZM14 36L16 37L15 34L23 35L28 38L25 39L21 39L21 43L20 43L17 43L15 42L11 41L11 40L8 39L5 40L3 39L4 37L0 38L2 40L0 41L0 28L7 31L14 34L14 36ZM234 28L233 29L229 28L227 28L223 27L225 26L227 25L230 26L232 26L233 27L234 28ZM4 22L0 23L0 20L3 20L7 21L6 22L4 22ZM248 27L252 27L255 32L260 32L262 26L270 26L274 29L274 33L268 36L262 36L258 40L254 44L248 45L245 48L238 54L237 60L242 63L248 65L255 68L261 70L268 72L271 75L274 81L280 83L280 75L283 72L287 67L285 63L285 57L283 49L290 49L295 49L301 52L307 53L308 60L312 62L319 57L323 58L329 66L332 70L339 72L342 76L345 78L343 82L337 85L329 88L318 87L313 90L306 95L305 97L315 91L322 92L320 97L325 101L332 97L334 101L324 105L318 108L316 105L317 103L314 104L308 107L304 110L303 112L305 114L306 113L304 115L300 115L298 116L299 116L296 117L295 117L295 118L292 123L291 122L291 123L292 124L289 128L290 126L288 122L288 125L288 126L289 129L290 133L285 137L282 139L280 141L275 144L274 149L275 153L276 157L278 163L277 166L275 166L273 164L270 159L270 155L267 151L264 152L262 150L257 150L252 150L252 151L252 153L251 153L248 154L243 152L239 152L234 155L230 158L229 161L230 164L229 169L228 175L229 178L232 183L234 186L238 188L242 187L246 186L249 183L249 179L254 178L258 177L259 180L257 183L257 185L255 187L255 188L255 190L255 192L254 194L253 195L254 195L255 196L257 195L260 196L261 195L263 195L264 195L266 195L267 197L269 198L269 199L268 201L268 204L268 206L267 208L267 209L268 211L269 214L272 216L273 217L274 218L276 217L279 215L280 215L283 216L285 218L289 216L290 214L292 210L294 210L298 208L301 206L302 207L302 209L301 211L300 214L302 216L302 213L305 209L306 207L309 209L311 212L316 212L320 213L321 212L328 211L327 214L331 216L333 218L336 220L338 224L340 225L345 227L347 226L351 227L356 231L357 232L360 239L361 242L360 245L365 249L371 248L377 252L379 253L389 254L397 260L401 261L403 266L402 273L397 280L393 286L392 288L391 299L390 303L387 311L384 315L380 317L374 320L368 323L365 329L365 334L362 337L357 345L354 349L351 353L345 354L341 353L338 352L341 356L342 360L340 365L330 367L327 369L327 373L323 375L319 374L321 378L324 379L319 382L318 387L313 388L315 393L317 396L312 402L308 405L311 410L307 409L303 411L302 414L295 411L291 407L290 403L291 395L290 392L293 384L298 378L295 381L294 376L297 369L296 362L298 357L302 347L302 340L303 332L304 319L305 307L302 301L296 297L289 291L288 288L283 278L279 270L276 266L275 263L275 258L278 253L277 254L276 251L276 248L278 244L279 242L281 240L281 238L284 237L286 233L285 230L285 227L284 222L282 220L282 219L280 217L278 218L277 219L278 221L277 222L275 221L274 221L272 219L270 219L267 218L268 217L266 215L265 214L264 214L263 214L262 213L262 211L262 210L260 208L258 206L257 204L256 203L254 204L252 203L250 202L247 201L244 199L239 195L235 194L232 196L228 195L223 193L218 190L215 189L211 186L207 182L207 181L208 179L207 176L205 174L200 168L196 165L196 162L193 160L191 157L188 154L187 151L186 147L183 146L181 146L181 150L184 154L185 155L186 156L188 159L190 161L192 166L193 169L195 170L196 172L194 173L192 170L188 167L188 163L185 161L184 161L180 158L182 158L183 155L179 152L177 148L175 143L172 139L171 138L168 137L165 136L162 131L160 126L156 123L154 118L155 113L155 108L155 98L154 94L158 94L160 96L159 91L153 88L146 85L145 81L141 77L137 73L133 71L129 65L125 62L117 61L109 57L100 57L91 54L89 57L84 57L79 59L79 54L82 53L76 56L74 60L69 64L65 66L60 69L55 70L49 72L42 74L45 72L51 69L55 68L60 65L62 62L61 61L58 62L56 61L52 61L50 59L49 57L43 56L41 53L40 50L43 47L47 47L51 46L53 43L53 42L49 42L46 42L38 42L33 39L43 36L45 37L49 35L43 33L37 30L43 29L47 26L53 24L61 23L69 22L72 22L77 23L84 23L95 25L101 25L108 26L118 28L123 27L131 27L139 25L143 25L146 24L154 25L158 27L163 26L173 28L180 29L180 32L192 32L198 33L198 30L203 29L207 30L213 31L222 32L226 30L233 31L235 31L238 28L232 25L236 19L242 21L243 26ZM183 15L188 16L195 16L199 20L199 15L204 15L209 20L214 24L219 26L216 28L210 29L202 28L189 30L184 28L177 28L176 25L184 25L182 23L172 23L177 21L168 20L173 17L183 15ZM210 14L207 16L203 14L204 14L208 14L210 14ZM288 15L288 16L285 16L282 16L279 17L278 16L275 15L275 14L277 13L283 14L288 15ZM260 15L264 15L276 17L281 18L290 18L294 21L302 22L311 25L309 29L320 32L328 35L322 41L315 36L311 39L317 42L320 46L316 47L313 48L316 51L303 47L300 45L292 42L284 43L284 40L295 39L295 37L297 32L292 30L288 28L283 26L279 26L264 25L254 24L254 21L249 18L254 14L260 15ZM221 13L225 14L230 13L230 14L228 16L232 17L231 20L227 21L224 21L222 20L215 17L215 16L221 17L218 15L221 13ZM899 15L895 15L889 15L891 13L895 13L899 14L899 15ZM241 16L238 19L235 19L233 16L233 14L235 13L237 12L243 12L249 13L244 16L241 16ZM165 21L158 22L157 21L150 19L151 18L153 16L156 14L153 12L162 11L166 12L173 12L176 13L179 14L176 15L169 17L165 19L165 21ZM919 9L915 10L911 10L906 9L907 8L912 8L919 9ZM240 9L238 11L234 10L231 10L233 8L237 7L239 8L240 9ZM903 8L901 10L891 10L886 11L880 9L882 6L886 6L893 6L903 8ZM226 4L229 5L229 7L227 9L223 10L220 9L220 7L215 8L215 5L218 5L222 4L226 4ZM199 6L201 7L203 6L206 6L206 8L205 9L195 10L188 11L184 11L184 10L189 9L177 9L173 9L177 6L179 5L187 6L192 8L197 8L193 5L196 4L198 4L199 6ZM660 23L649 23L643 21L646 18L651 14L655 11L661 8L679 5L689 3L689 6L671 9L658 15L655 20ZM237 3L246 4L247 6L252 8L260 8L270 7L278 8L277 11L269 11L255 11L243 10L242 7L233 5L231 3ZM177 1L177 4L175 5L172 5L167 6L163 7L159 6L163 4L169 2L173 2L177 1ZM797 3L800 4L815 6L816 8L806 11L807 12L814 13L817 14L830 14L842 16L848 14L857 16L857 19L865 23L872 21L882 21L889 20L890 16L918 20L936 22L944 24L947 27L956 26L966 26L974 28L973 25L988 26L1000 28L1000 41L993 42L997 46L999 48L993 49L982 51L974 56L969 55L961 56L954 57L950 62L953 64L950 69L950 73L945 78L940 82L935 83L932 71L935 65L940 63L950 55L957 49L952 51L943 51L928 57L924 60L920 58L913 59L895 60L875 73L881 75L886 75L893 78L891 84L889 93L884 100L876 107L871 111L867 109L863 112L861 113L860 117L858 118L855 119L854 122L855 122L859 127L860 133L856 135L851 137L852 133L852 129L849 126L848 127L847 126L847 124L848 123L848 121L845 120L839 122L838 121L839 118L835 118L831 122L826 123L830 126L833 128L838 127L840 129L835 132L831 135L835 140L839 146L837 149L839 151L838 156L834 160L830 168L822 174L817 175L815 176L808 178L805 181L805 178L800 177L794 183L796 189L801 195L804 203L801 211L796 215L791 216L790 212L786 210L782 205L780 203L778 206L775 214L777 216L779 222L782 224L784 226L787 230L787 233L788 236L790 240L788 241L782 236L780 233L778 228L778 225L776 222L774 219L773 219L774 214L774 209L774 204L772 199L770 192L765 196L762 195L762 188L760 183L757 180L756 177L754 174L752 175L750 176L748 176L747 177L742 178L740 182L733 188L728 192L727 194L723 195L723 202L722 207L720 213L720 216L717 219L713 217L710 210L708 205L707 199L703 189L702 181L698 180L692 176L693 173L687 170L684 165L675 166L666 165L659 164L657 160L652 162L646 158L641 155L638 151L635 151L634 152L634 155L637 159L639 161L639 164L640 166L641 167L642 163L643 164L643 168L644 169L646 169L650 169L654 165L657 162L657 164L657 167L659 170L663 171L665 174L666 175L665 178L662 181L661 182L661 185L659 186L657 188L655 189L654 191L651 192L648 193L645 195L642 197L635 201L633 201L630 203L627 203L625 204L624 205L621 205L620 202L619 199L619 197L619 195L618 192L617 190L615 186L612 182L609 178L609 174L606 169L603 167L603 165L601 162L598 157L597 155L597 153L596 154L595 158L593 157L590 151L591 155L595 163L597 166L599 170L602 175L603 179L603 183L605 187L608 192L611 197L616 201L618 204L620 206L619 208L621 210L623 212L627 212L632 210L634 209L637 209L640 208L642 207L642 210L641 213L639 220L635 228L629 236L622 242L617 248L616 250L613 253L611 255L610 259L608 264L610 267L609 269L609 272L611 277L612 279L613 285L613 291L611 296L607 299L601 304L598 307L596 310L598 314L599 315L598 319L598 321L595 323L590 326L591 328L591 331L589 336L587 338L585 341L580 346L576 350L572 351L570 351L566 351L563 352L557 353L554 355L552 353L551 352L551 350L551 347L549 342L547 339L543 333L542 327L540 320L540 315L537 311L535 305L533 300L533 295L534 291L535 286L538 283L538 279L536 276L536 273L536 269L534 265L534 263L531 258L526 252L525 248L526 244L526 241L527 235L525 233L524 231L521 231L519 232L515 230L512 225L507 225L503 227L497 229L492 229L489 229L484 229L479 232L478 231L472 228L468 224L465 222L464 219L462 215L460 214L459 212L458 210L455 209L455 208L454 206L454 202L451 199L454 196L454 193L455 188L455 184L454 181L453 178L454 176L455 173L457 169L459 166L460 163L464 158L468 157L471 154L473 147L474 143L479 139L483 135L486 133L490 134L494 135L500 132L504 130L513 129L517 129L521 129L526 128L528 130L531 129L529 132L530 136L529 139L531 141L535 142L539 142L544 147L550 148L554 149L555 145L558 142L564 143L566 144L569 145L574 146L579 148L582 147L586 146L589 148L592 148L595 147L596 146L597 142L598 141L600 136L600 134L599 131L599 130L595 131L588 130L584 131L580 130L575 127L574 123L576 118L581 116L590 114L598 113L607 116L612 116L616 113L614 110L611 109L604 105L604 102L605 99L609 97L604 97L600 99L597 102L601 102L598 104L593 105L590 103L593 101L588 100L585 99L582 103L581 104L579 108L577 111L578 114L580 116L576 117L572 117L571 117L566 117L566 120L563 118L563 120L564 123L567 125L564 126L563 128L562 131L559 127L558 123L556 121L555 120L554 117L554 114L553 113L551 112L547 109L542 106L541 105L540 103L538 103L538 102L537 101L534 104L535 107L539 111L544 113L544 115L549 117L551 119L549 119L546 120L547 123L545 126L544 125L545 123L543 119L541 118L538 116L534 114L529 110L527 107L523 106L521 108L513 109L508 112L506 116L502 117L499 122L499 125L496 127L491 130L486 131L484 132L482 129L478 129L475 129L475 125L474 123L475 120L476 117L475 115L475 111L478 108L485 108L490 109L496 107L494 97L488 94L491 91L495 89L504 88L507 84L511 83L517 77L520 76L523 77L524 74L523 71L523 67L526 65L529 64L528 66L530 68L529 69L528 72L530 74L533 75L538 75L541 75L549 73L552 74L555 73L558 69L560 65L565 66L568 64L567 62L565 59L572 58L578 58L578 55L568 56L562 55L560 51L560 47L569 41L570 39L562 39L559 43L550 48L550 55L550 60L546 66L541 69L536 71L533 65L529 58L520 63L515 58L516 48L529 42L541 32L553 26L564 25L573 22L587 24L586 27L594 27L612 32L614 35L607 38L592 36L597 43L603 44L601 42L610 42L610 39L619 36L624 35L623 32L628 31L627 33L629 36L634 33L649 29L649 31L654 30L663 29L670 28L668 26L680 28L692 29L689 27L687 25L685 22L692 16L702 16L700 21L702 24L705 30L698 37L702 36L706 34L707 30L705 28L707 23L708 18L709 16L709 21L711 19L721 18L724 17L728 13L741 13L742 9L751 7L759 6L769 7L780 5L783 2L795 2L797 3ZM239 2L238 2L233 1L232 1L238 1L240 1L239 2ZM194 1L189 2L185 1L187 0L191 0L195 0L194 1ZM569 0L562 2L558 1L559 0L558 -1L564 -1L565 0L569 0ZM195 -2L192 -1L187 -1L187 -2L190 -3L192 -3L195 -2ZM234 0L230 0L227 0L226 -1L226 -3L230 -3L231 -2L235 -1L234 0ZM222 -1L223 0L219 0L214 -1L208 -1L211 -2L207 -3L207 -4L212 -4L220 -3L222 -1ZM792 -1L776 0L781 -4L784 -4L786 -4L793 -2L792 -1ZM551 -5L560 -3L553 -2L551 1L549 1L548 4L544 4L538 2L541 1L537 0L531 -3L529 -5L537 -6L538 -5L542 -5L543 -6L547 -6L551 -5ZM571 -8L576 -6L572 -5L564 -4L556 -5L555 -6L551 -6L548 -7L557 -8L561 -7L564 -8L571 -8ZM642 -8L638 -8L636 -7L635 -7L632 -6L629 -7L631 -8L625 -8L630 -9L634 -9L635 -8L636 -9L639 -9L643 -8L642 -8ZM778 -3L772 -2L764 -3L759 -4L757 -7L753 -7L760 -10L767 -10L772 -9L778 -6L778 -3ZM258 -5L262 -4L258 -3L253 -1L248 -1L242 -1L239 -2L239 -4L241 -4L236 -4L233 -5L231 -7L233 -8L235 -9L238 -9L237 -10L243 -10L247 -9L252 -8L256 -7L258 -5ZM310 -16L323 -15L328 -14L315 -12L318 -11L307 -8L297 -5L286 -4L288 -3L288 -1L282 2L279 3L284 4L269 5L257 5L251 3L255 0L264 1L256 -1L263 -3L260 -5L266 -7L273 -8L257 -8L249 -10L246 -12L253 -13L262 -15L269 -14L275 -16L288 -16L298 -16L310 -16ZM425 -17L437 -14L411 -13L423 -13L436 -13L436 -10L456 -12L466 -10L453 -7L451 -7L445 -2L449 3L440 4L446 9L446 12L443 13L438 15L438 17L433 17L435 19L440 23L432 22L430 23L434 25L430 27L415 31L409 32L399 38L393 39L387 41L386 46L382 51L380 56L371 54L363 52L357 45L355 40L352 35L353 30L358 28L356 26L352 27L348 24L352 23L352 21L347 21L348 17L344 14L337 9L330 6L316 6L306 5L309 2L303 1L297 -1L317 -4L311 -7L323 -10L326 -12L341 -13L353 -12L367 -13L376 -12L370 -15L389 -16L403 -18Z';
+
+/* =====================================================================
+   ★ 写真の追加方法 ★
+   ---------------------------------------------------------------
+   ・北海道の作品 → 下の WORKS 配列に1行追加
+   ・世界の作品   → WORLD_WORKS 配列に1行追加
+     (1枚でも追加すると「COMING SOON」表示は自動で消え、
+      地図上にマーカーとラベルが自動で描画されます)
+
+   1行の書式:
+   {src:'画像のURL', loc:'撮影地名', en:'英語表記', lat:緯度, lng:経度},
+
+   例(世界の作品を追加する場合):
+   {src:'https://example.com/photo.jpg', loc:'イエローナイフ',
+    en:'YELLOWKNIFE, CANADA', lat:62.45, lng:-114.37},
+
+   ※ 地図マーカーの位置と撮影地名は loc / lat / lng で自由に修正できます
+
+   ※ f:'0002' は既存ギャラリー画像の短縮形です(src の代わりに使えます)
+   ===================================================================== */
+const BASE='https://gallery.northfinder.jp/wp-content/uploads/2018/12/Kensuke_Takahashi-';
+
+const WORKS=[
+ {f:'0002',loc:'美瑛',en:'BIEI',lat:43.588,lng:142.467},
+ {f:'0003',loc:'層雲峡',en:'SOUNKYO',lat:43.727,lng:142.951},
+ {f:'0004',loc:'大雪山',en:'DAISETSUZAN',lat:43.663,lng:142.854},
+ {f:'0005',loc:'美瑛',en:'BIEI',lat:43.588,lng:142.467},
+ {f:'0006',loc:'知床',en:'SHIRETOKO',lat:44.07,lng:145.12},
+ {f:'0007',loc:'ニセコ',en:'NISEKO',lat:42.83,lng:140.82},
+ {f:'0008',loc:'大雪山',en:'DAISETSUZAN',lat:43.663,lng:142.854},
+ {f:'0009',loc:'富良野',en:'FURANO',lat:43.34,lng:142.38},
+ {f:'0010',loc:'定山渓',en:'JOZANKEI',lat:42.966,lng:141.166},
+ {f:'0011',loc:'支笏湖',en:'LAKE SHIKOTSU',lat:42.76,lng:141.38},
+ {f:'0012',loc:'摩周湖',en:'LAKE MASHU',lat:43.58,lng:144.57},
+ {f:'0013',loc:'阿寒',en:'AKAN',lat:43.45,lng:144.09},
+ {f:'0014',loc:'然別湖',en:'LAKE SHIKARIBETSU',lat:43.29,lng:143.09},
+ {f:'0015',loc:'洞爺湖',en:'LAKE TOYA',lat:42.60,lng:140.85},
+ {f:'0016',loc:'十勝',en:'TOKACHI',lat:42.92,lng:143.20},
+ {f:'0017',loc:'中富良野',en:'NAKAFURANO',lat:43.40,lng:142.43},
+ {f:'0018',loc:'小樽',en:'OTARU',lat:43.19,lng:141.00}
+];
+
+/* ▼ 世界の作品はここに追加(現在は準備中のため空) */
+const WORLD_WORKS=[
+];
+
+const ALL=WORKS.concat(WORLD_WORKS);
+const img=w=>w.src||BASE+w.f+'.jpg';
+const coord=w=>Math.abs(w.lat).toFixed(2)+'°'+(w.lat>=0?'N':'S')+' '+Math.abs(w.lng).toFixed(2)+'°'+(w.lng>=0?'E':'W');
+
+/* ================= ギャラリー(作品数は自動反映) ================= */
+function kanji(n){const d='〇一二三四五六七八九';if(n<10)return d[n];const t=Math.floor(n/10),o=n%10;return(t>1?d[t]:'')+'十'+(o?d[o]:'');}
+document.getElementById('worksTitle').textContent=kanji(ALL.length)+'の風景';
+document.getElementById('worksCount').textContent='2010 — PRESENT / '+(WORLD_WORKS.length?'HOKKAIDO & WORLD':'HOKKAIDO');
+
+const grid=document.getElementById('grid');
+ALL.forEach((w,i)=>{
+  const el=document.createElement('div');
+  el.className='work rv';el.tabIndex=0;el.setAttribute('role','button');
+  el.setAttribute('aria-label','作品 '+(i+1)+'。クリックで拡大表示');
+  el.innerHTML='<img src="'+img(w)+'" alt="作品 '+(i+1)+'" loading="lazy">'+
+    '<div class="work-info"><p>'+String(i+1).padStart(2,'0')+'</p></div>';
+  el.addEventListener('click',()=>openLb(i));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLb(i);}});
+  grid.appendChild(el);
+});
+
+/* ================= ライトボックス ================= */
+const lb=document.getElementById('lb');
+let cur=0;
+function openLb(i){cur=i;renderLb();lb.classList.add('open');document.body.style.overflow='hidden';document.getElementById('lbClose').focus();}
+function closeLb(){lb.classList.remove('open');document.body.style.overflow='';}
+function renderLb(){
+  const w=ALL[cur];
+  document.getElementById('lbImg').src=img(w);
+  document.getElementById('lbImg').alt='作品 '+(cur+1);
+  document.getElementById('lbIdx').textContent=String(cur+1).padStart(2,'0')+' / '+ALL.length;
+}
+document.getElementById('lbClose').addEventListener('click',closeLb);
+document.getElementById('lbPrev').addEventListener('click',()=>{cur=(cur-1+ALL.length)%ALL.length;renderLb();});
+document.getElementById('lbNext').addEventListener('click',()=>{cur=(cur+1)%ALL.length;renderLb();});
+lb.addEventListener('click',e=>{if(e.target===lb)closeLb();});
+document.addEventListener('keydown',e=>{
+  if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')closeLb();
+  if(e.key==='ArrowLeft'){cur=(cur-1+ALL.length)%ALL.length;renderLb();}
+  if(e.key==='ArrowRight'){cur=(cur+1)%ALL.length;renderLb();}
+});
+
+/* ================= 地図共通 ================= */
+const NS='http://www.w3.org/2000/svg';
+function groupSpots(works,offset){
+  const spots=[];
+  works.forEach((w,i)=>{
+    let s=spots.find(s=>s.loc===w.loc);
+    if(!s){s={loc:w.loc,en:w.en,lat:w.lat,lng:w.lng,items:[]};spots.push(s);}
+    s.items.push(offset+i);
+  });
+  return spots;
+}
+function buildMarkers(svg,spots,PX,PY,labelLeft,panelEl,fieldsLabel){
+  const markers=[];
+  spots.forEach((s,si)=>{
+    const g=document.createElementNS(NS,'g');
+    g.setAttribute('class','mk');g.setAttribute('tabindex','0');g.setAttribute('role','button');
+    g.setAttribute('aria-label',s.loc+'の作品を表示');
+    const x=PX(s.lng),y=PY(s.lat);
+    const halo=document.createElementNS(NS,'circle');
+    halo.setAttribute('class','halo');halo.setAttribute('cx',x);halo.setAttribute('cy',y);halo.setAttribute('r',6);
+    const dot=document.createElementNS(NS,'circle');
+    dot.setAttribute('class','dot');dot.setAttribute('cx',x);dot.setAttribute('cy',y);dot.setAttribute('r',4.2);
+    const tx=document.createElementNS(NS,'text');
+    const left=labelLeft.includes(s.loc);
+    tx.setAttribute('x',left?x-11:x+11);tx.setAttribute('y',y+3.5);
+    tx.setAttribute('text-anchor',left?'end':'start');
+    tx.textContent=s.loc;
+    g.appendChild(halo);g.appendChild(dot);g.appendChild(tx);
+    const select=()=>{
+      markers.forEach((m,i)=>m.classList.toggle('active',i===si));
+      renderPanel(panelEl,s,si,spots.length,fieldsLabel);
+    };
+    g.addEventListener('click',select);
+    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select();}});
+    svg.appendChild(g);markers.push(g);
+  });
+  return markers;
+}
+function renderPanel(panelEl,s,si,total,fieldsLabel){
+  const two=s.items.length>1?' two':'';
+  panelEl.innerHTML=
+    '<h3 class="panel-loc">'+s.loc+'<small>'+s.en+' — '+coord(s)+'</small></h3>'+
+    '<div class="panel-photos'+two+'">'+
+    s.items.map(i=>{const w=ALL[i];return '<div class="p-item" role="button" tabindex="0" aria-label="作品 '+(i+1)+'を拡大表示" data-i="'+i+'"><img src="'+img(w)+'" alt="作品 '+(i+1)+'" loading="lazy"></div>';}).join('')+
+    '</div>'+
+    '<p class="panel-count">'+String(s.items.length).padStart(2,'0')+' WORK'+(s.items.length>1?'S':'')+' — '+String(si+1).padStart(2,'0')+' / '+String(total).padStart(2,'0')+' '+fieldsLabel+'</p>';
+  panelEl.querySelectorAll('.p-item').forEach(el=>{
+    const open=()=>openLb(+el.dataset.i);
+    el.addEventListener('click',open);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  });
+}
+
+/* ================= 北海道マップ(実座標から描画) ================= */
+const COAST=[[45.52,141.94],[45.44,142.17],[45.10,142.40],[44.90,142.58],[44.58,142.96],[44.35,143.36],[44.02,144.27],[43.91,144.72],[44.10,145.00],[44.35,145.33],[44.00,145.20],[43.66,145.13],[43.38,145.78],[43.33,145.82],[43.25,145.52],[43.03,145.10],[42.95,144.60],[42.98,144.38],[42.85,143.90],[42.63,143.58],[42.28,143.32],[41.93,143.24],[42.12,142.95],[42.35,142.35],[42.56,141.90],[42.63,141.60],[42.32,140.97],[42.36,140.78],[42.51,140.37],[42.28,140.24],[42.00,140.55],[41.90,140.92],[41.77,140.72],[41.70,140.60],[41.43,140.09],[41.62,139.99],[41.87,140.12],[42.12,139.99],[42.45,139.85],[42.70,140.12],[42.98,140.50],[43.20,140.36],[43.37,140.47],[43.34,140.66],[43.22,140.80],[43.19,141.00],[43.18,141.38],[43.42,141.44],[43.70,141.53],[43.94,141.64],[44.36,141.70],[44.88,141.74],[45.20,141.63],[45.41,141.68]];
+const HX=lng=>(lng-139.55)*105+10, HY=lat=>(45.75-lat)*128+10;
+const hkSvg=document.getElementById('hokkaido');
+const hkPath=document.createElementNS(NS,'path');
+hkPath.setAttribute('class','coast');
+hkPath.setAttribute('d','M'+COAST.map(p=>HX(p[1]).toFixed(1)+' '+HY(p[0]).toFixed(1)).join(' L ')+' Z');
+hkSvg.appendChild(hkPath);
+
+const hkSpots=groupSpots(WORKS,0);
+const hkPanel=document.getElementById('panel');
+const hkMarkers=buildMarkers(hkSvg,hkSpots,HX,HY,['ニセコ','洞爺湖','小樽','定山渓','支笏湖'],hkPanel,'FIELDS');
+hkMarkers[0].dispatchEvent(new Event('click')); /* 初期表示:美瑛 */
+
+/* ================= 世界マップ(Natural Earth 110m を簡略化) ================= */
+const WX=lng=>(lng+180)/360*1000, WY=lat=>(78-lat)/140*440;
+const wSvg=document.getElementById('world');
+const wLand=document.createElementNS(NS,'path');
+wLand.setAttribute('class','land');
+wLand.setAttribute('d',WORLD_PATH);
+wSvg.appendChild(wLand);
+
+/* 拠点マーカー(札幌) */
+const home=document.createElementNS(NS,'g');
+home.setAttribute('class','home-mk');
+const hx=WX(141.35),hy=WY(43.06);
+home.innerHTML='<circle class="c" cx="'+hx+'" cy="'+hy+'" r="3"/><circle cx="'+hx+'" cy="'+hy+'" r="8"/>'+
+ '<text x="'+(hx+14)+'" y="'+(hy+4)+'">HOKKAIDO — HOME</text>';
+wSvg.appendChild(home);
+
+const wPanel=document.getElementById('worldPanel');
+const wComing=document.getElementById('worldComing');
+if(WORLD_WORKS.length){
+  wComing.style.display='none';
+  document.getElementById('worldBadge').style.display='none';
+  const wSpots=groupSpots(WORLD_WORKS,WORKS.length);
+  const wMarkers=buildMarkers(wSvg,wSpots,WX,WY,[],wPanel,'FIELDS');
+  wMarkers[0].dispatchEvent(new Event('click'));
+}else{
+  wPanel.innerHTML='<div class="panel-empty">'+
+   '<h3 class="panel-loc">世界へ<small>WORLD SERIES — IN PREPARATION</small></h3>'+
+   '<p class="mono-note">00 WORKS — COMING SOON</p></div>';
+}
+
+/* ================= マップ切替タブ ================= */
+const tabH=document.getElementById('tabHokkaido'),tabW=document.getElementById('tabWorld');
+const viewH=document.getElementById('viewHokkaido'),viewW=document.getElementById('viewWorld');
+function switchTab(world){
+  tabH.classList.toggle('active',!world);tabW.classList.toggle('active',world);
+  tabH.setAttribute('aria-selected',!world);tabW.setAttribute('aria-selected',world);
+  viewH.classList.toggle('show',!world);viewW.classList.toggle('show',world);
+}
+tabH.addEventListener('click',()=>switchTab(false));
+tabW.addEventListener('click',()=>switchTab(true));
+
+/* ================= ナビ・出現アニメーション ================= */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>60),{passive:true});
+const menuBtn=document.getElementById('menuBtn'),navLinks=document.getElementById('navLinks');
+menuBtn.addEventListener('click',()=>{
+  const open=navLinks.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded',open);menuBtn.textContent=open?'CLOSE':'MENU';
+});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  navLinks.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.textContent='MENU';
+}));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
