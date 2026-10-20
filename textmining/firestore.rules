@@ -1,0 +1,50 @@
+rules_version = '2';
+
+// ことばレンズ 授業モード用のセキュリティルール
+// Firebase コンソール → Firestore Database →「ルール」にこのファイルの内容を貼り付けて「公開」してください。
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ▼ 教員として問いを作れる Google アカウントのメールアドレス（必ず書き換える）
+    function isTeacher() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['teacher@example.com'];
+    }
+
+    function validQuestion(d) {
+      return d.title is string && d.title.size() > 0 && d.title.size() <= 200
+        && d.open is bool;
+    }
+
+    // 問い：題名と受付状態は回答画面に出すため誰でも読める。作成・変更は持ち主の教員だけ
+    match /questions/{qid} {
+      allow get: if true;
+      allow list: if isTeacher() && resource.data.ownerUid == request.auth.uid;
+      allow create: if isTeacher()
+        && request.resource.data.keys().hasOnly(['ownerUid', 'title', 'open', 'createdAt'])
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && validQuestion(request.resource.data);
+      allow update: if isTeacher()
+        && resource.data.ownerUid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title', 'open'])
+        && validQuestion(request.resource.data);
+      allow delete: if isTeacher() && resource.data.ownerUid == request.auth.uid;
+
+      // 回答：子どもはログインなしで「追加」だけできる（読む・直す・消すは不可）。名前などは保存しない
+      match /responses/{rid} {
+        function question() {
+          return get(/databases/$(database)/documents/questions/$(qid)).data;
+        }
+        allow create: if request.resource.data.keys().hasOnly(['text', 'createdAt'])
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 1000
+          && request.resource.data.createdAt == request.time
+          && question().open == true;
+        allow read, delete: if isTeacher() && question().ownerUid == request.auth.uid;
+      }
+    }
+  }
+}

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>ことばレンズ 回答</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="lens.css">
+<style>
+/* 子ども用：1つの問いと1つの入力欄だけを大きく見せる */
+body{font-size:1.0625rem}
+.card{max-width:640px; margin:0 auto; background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:24px 20px; display:flex; flex-direction:column; gap:16px}
+.brand{font-family:var(--display); font-weight:900; font-size:var(--fs-m); color:var(--muted); margin:0}
+.brand span{color:var(--accent)}
+#qTitle{font-family:var(--display); font-weight:700; font-size:1.5rem; line-height:1.5; margin:0; text-wrap:balance}
+#answer{min-height:180px; font-size:1.125rem; line-height:1.8; background:var(--paper)}
+.foot{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px}
+#count{font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:var(--fs-s); color:var(--muted)}
+#count.over{color:var(--c6)}
+#send{font-size:1.0625rem; padding:12px 28px}
+#send:disabled{opacity:.5; cursor:not-allowed}
+.msg{margin:0; font-size:1rem}
+.done{display:flex; flex-direction:column; gap:12px; align-items:flex-start}
+.done p{margin:0; font-size:1.25rem; font-weight:700; font-family:var(--display)}
+.err{color:var(--c6); font-size:var(--fs-s); margin:0}
+label.note{display:block; line-height:1.6}
+</style>
+
+<main class="card" aria-live="polite">
+  <p class="brand">ことば<span>レンズ</span></p>
+
+  <div id="loading"><p class="msg">読みこみ中…</p></div>
+
+  <div id="problem" hidden><p class="msg" id="problemMsg"></p></div>
+
+  <form id="form" hidden>
+    <h1 id="qTitle"></h1>
+    <label for="answer" class="note">思ったことを自由に書いてください。名前は書かなくてだいじょうぶです。</label>
+    <textarea id="answer" maxlength="1000" required></textarea>
+    <p class="err" id="sendErr" hidden></p>
+    <div class="foot">
+      <span id="count">0 / 1000</span>
+      <button class="primary" id="send" type="submit" disabled>送る</button>
+    </div>
+  </form>
+
+  <div class="done" id="done" hidden>
+    <p>送りました。ありがとう！</p>
+    <button type="button" id="again">もう1つ書く</button>
+  </div>
+</main>
+
+<script type="module">
+import { firebaseConfig, SDK, emulators } from './firebase-config.js';
+const $ = s => document.querySelector(s);
+const show = id => ['loading', 'problem', 'form', 'done'].forEach(k => $('#' + k).hidden = k !== id);
+const problem = msg => { $('#problemMsg').textContent = msg; show('problem'); };
+
+const qid = new URLSearchParams(location.search).get('q');
+if (!firebaseConfig.projectId) problem('まだ準備ができていません。先生に知らせてください。（firebase-config.js が未設定）');
+else if (!qid) problem('このURLには問いが入っていません。先生からもらったURLをもう一度開いてください。');
+else start();
+
+async function start(){
+  const [{ initializeApp }, fs] = await Promise.all([import(`${SDK}/firebase-app.js`), import(`${SDK}/firebase-firestore.js`)]);
+  const db = fs.getFirestore(initializeApp(firebaseConfig));
+  if (emulators) fs.connectFirestoreEmulator(db, emulators.host, emulators.firestore);
+  const qRef = fs.doc(db, 'questions', qid);
+  let open = false;
+
+  // 締め切り・再開を先生が切り替えたらすぐ画面に反映する
+  fs.onSnapshot(qRef, snap => {
+    if (!snap.exists()) { problem('この問いは見つかりませんでした。先生からもらったURLをもう一度開いてください。'); return; }
+    const q = snap.data();
+    open = q.open;
+    $('#qTitle').textContent = q.title;
+    document.title = `${q.title} | ことばレンズ`;
+    if (!open) problem(`「${q.title}」の受付は終わりました。`);
+    else if (!$('#loading').hidden || !$('#problem').hidden) show('form');
+  }, () => problem('問いを読みこめませんでした。通信のようすを確かめて、ページを開き直してください。'));
+
+  const answer = $('#answer');
+  const update = () => {
+    const n = answer.value.trim().length;
+    $('#count').textContent = `${answer.value.length} / 1000`;
+    $('#send').disabled = n === 0;
+  };
+  answer.addEventListener('input', update);
+
+  $('#form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const text = answer.value.trim();
+    if (!text || !open) return;
+    $('#send').disabled = true; $('#send').textContent = '送っています…'; $('#sendErr').hidden = true;
+    try {
+      await fs.addDoc(fs.collection(qRef, 'responses'), { text, createdAt: fs.serverTimestamp() });
+      answer.value = ''; update();
+      show('done');
+    } catch (err) {
+      $('#sendErr').textContent = '送れませんでした。受付が終わったか、通信がとぎれた可能性があります。もう一度「送る」を押してください。';
+      $('#sendErr').hidden = false;
+      $('#send').disabled = false;
+    } finally {
+      $('#send').textContent = '送る';
+    }
+  });
+  $('#again').addEventListener('click', () => { show('form'); answer.focus(); });
+}
+</script>
