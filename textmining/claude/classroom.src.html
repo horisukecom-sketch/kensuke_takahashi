@@ -1,0 +1,356 @@
+<title>ことばレンズ 教室</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/*LENS_CSS*/
+/* 教室モード：子どもは1つの問いと入力欄だけ、先生は左に問いの管理と回答、右に解析結果 */
+.card{max-width:640px; width:100%; margin:0 auto; background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:24px 20px; display:flex; flex-direction:column; gap:16px}
+.brand{font-family:var(--display); font-weight:900; font-size:var(--fs-m); color:var(--muted); margin:0}
+.brand span{color:var(--accent)}
+.msg{margin:0; font-size:1rem; line-height:1.8}
+#form{display:flex; flex-direction:column; gap:12px}
+#sTitle{font-family:var(--display); font-weight:700; font-size:1.5rem; line-height:1.5; margin:0; text-wrap:balance; overflow-wrap:anywhere}
+#answer{min-height:180px; font-size:1.125rem; line-height:1.8}
+label.note{display:block; line-height:1.6}
+.foot{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px}
+#count{font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:var(--fs-s); color:var(--muted)}
+#send{font-size:1.0625rem; padding:12px 28px}
+#send:disabled{opacity:.5; cursor:not-allowed}
+.done{display:flex; flex-direction:column; gap:12px; align-items:flex-start}
+.done p{margin:0; font-size:1.25rem; font-weight:700; font-family:var(--display)}
+.err{color:var(--c6); font-size:var(--fs-s); margin:0}
+.mine{display:flex; flex-direction:column; gap:6px; border-top:1px solid var(--line); padding-top:14px}
+.mine h2{font-size:var(--fs-s); color:var(--muted)}
+.mine ul{margin:0; padding:0; display:flex; flex-direction:column; gap:6px}
+.mine li{list-style:none; font-size:var(--fs-s); background:var(--paper); border-radius:4px; padding:6px 10px; overflow-wrap:anywhere; white-space:pre-wrap}
+
+header.top{justify-content:space-between; align-items:center}
+.who{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.side{display:flex; flex-direction:column; gap:16px; min-width:0}
+.qnew{display:flex; gap:8px}
+.qnew input{flex:1; min-width:0}
+.status{display:inline-flex; align-items:center; gap:6px; font-size:var(--fs-xs); font-weight:700; padding:2px 10px; border-radius:99px; border:1px solid currentColor; white-space:nowrap}
+.status.open{color:var(--c3)}
+.status.closed{color:var(--muted)}
+.status.live{color:var(--accent)}
+.status i{width:7px; height:7px; border-radius:50%; background:currentColor}
+#qHead{display:flex; flex-direction:column; gap:10px}
+#qTitleView{font-family:var(--display); font-weight:700; font-size:var(--fs-l); margin:0; line-height:1.45; text-wrap:balance; overflow-wrap:anywhere}
+.url{display:flex; gap:8px}
+.url input{font-family:var(--mono); font-size:var(--fs-xs); min-width:0}
+.url button{white-space:nowrap}
+.qr{display:flex; gap:14px; align-items:center}
+.qr .code{background:#FFFFFF; padding:6px; border-radius:4px; line-height:0; flex:none}
+.qr .code svg{width:132px; height:132px}
+.resp{max-height:340px; overflow-y:auto; border:1px solid var(--line); border-radius:var(--r); background:var(--paper)}
+.resp ul{margin:0; padding:0}
+.resp li{list-style:none; display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:start; padding:8px 10px; border-bottom:1px solid var(--line); font-size:var(--fs-s)}
+.resp li:last-child{border-bottom:0}
+.resp li.off p{color:var(--muted); text-decoration:line-through}
+.resp time{font-family:var(--mono); font-size:var(--fs-xs); color:var(--muted); padding-top:2px}
+.resp p{margin:0; overflow-wrap:anywhere; white-space:pre-wrap}
+.resp button{padding:2px 8px; font-size:var(--fs-xs); white-space:nowrap}
+details.opts summary{cursor:pointer; font-family:var(--display); font-weight:700; letter-spacing:.04em}
+details.opts[open] summary{margin-bottom:12px}
+details.opts > div{display:flex; flex-direction:column; gap:14px}
+.present-title{display:none; font-family:var(--display); font-weight:900; font-size:2rem; margin:0; line-height:1.4; text-wrap:balance; overflow-wrap:anywhere}
+.results-wrap{display:flex; flex-direction:column; gap:16px; min-width:0}
+body.present{--canvas-scale:1.35}
+body.present .side{display:none}
+body.present .grid{grid-template-columns:minmax(0,1fr)}
+body.present .present-title{display:block}
+</style>
+
+<!-- 起動中・案内 -->
+<main class="card" id="boot" aria-live="polite">
+  <p class="brand">ことば<span>レンズ</span></p>
+  <p class="msg" id="bootMsg">読みこみ中…</p>
+</main>
+
+<!-- 子どもの回答画面 -->
+<main class="card" id="student" hidden aria-live="polite">
+  <p class="brand">ことば<span>レンズ</span></p>
+  <p class="msg" id="sWait" hidden></p>
+  <form id="form" hidden>
+    <h1 id="sTitle"></h1>
+    <label for="answer" class="note">思ったことを自由に書いてください。名前は書かなくてだいじょうぶです。</label>
+    <textarea id="answer" maxlength="1000"></textarea>
+    <p class="err" id="sendErr" hidden></p>
+    <div class="foot">
+      <span id="count">0 / 1000</span>
+      <button class="primary" id="send" type="submit" disabled>送る</button>
+    </div>
+  </form>
+  <div class="done" id="done" hidden>
+    <p>送りました。ありがとう！</p>
+    <button type="button" id="again">もう1つ書く</button>
+  </div>
+  <section class="mine" id="mine" hidden>
+    <h2>あなたがこの問いに送った回答（自分にだけ見えます）</h2>
+    <ul id="mineList"></ul>
+  </section>
+</main>
+
+<!-- 先生の集計画面 -->
+<div class="wrap" id="teacher" hidden>
+  <header class="top">
+    <h1>ことば<span>レンズ</span> <small style="font-size:var(--fs-m); color:var(--muted)">先生</small></h1>
+    <div class="who"><button type="button" id="present">大きく表示</button></div>
+  </header>
+
+  <div class="grid">
+    <div class="side">
+      <section class="panel" aria-labelledby="h-q">
+        <h2 id="h-q">問い</h2>
+        <form class="qnew" id="qNewForm">
+          <input type="text" id="qNew" maxlength="200" placeholder="新しい問い（例：今日の授業で心に残ったこと）" aria-label="新しい問い">
+          <button class="primary" type="submit">出す</button>
+        </form>
+        <p class="note">「出す」と、子どもの画面にこの問いがすぐ表示されます。</p>
+        <select id="qSelect" aria-label="問いを選ぶ"></select>
+        <div id="qHead" hidden>
+          <div class="row" style="justify-content:space-between">
+            <div class="row"><span class="status" id="qLive"></span><span class="status" id="qStatus"></span></div>
+            <div class="row">
+              <button type="button" id="qShow">子どもの画面に出す</button>
+              <button type="button" id="qToggle"></button>
+            </div>
+          </div>
+          <p id="qTitleView"></p>
+        </div>
+        <div class="field">
+          <label for="qUrl">子どもに配るURL（どの問いでも同じ）</label>
+          <div class="url"><input type="text" id="qUrl" readonly><button type="button" id="qCopy">コピー</button></div>
+        </div>
+        <div class="qr"><div class="code" id="qQr"></div><p class="note">カメラで読み取ると回答画面が開きます。子どもの画面には、いま「子どもの画面に出す」にしている問いが表示されます。</p></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-r" id="respPanel" hidden>
+        <div class="row" style="justify-content:space-between">
+          <h2 id="h-r">回答</h2>
+          <span class="note" id="respCount"></span>
+        </div>
+        <div class="resp"><ul id="respList"></ul></div>
+        <p class="note">新しい回答は自動で追加され、右の解析もすぐ更新されます。「外す」を押した回答は解析に入りません（もう一度押すと戻ります）。名前は表示しません。</p>
+      </section>
+
+      <section class="panel">
+        <details class="opts">
+          <summary>解析条件</summary>
+          <div>
+/*LENS_OPTIONS*/
+          </div>
+        </details>
+      </section>
+    </div>
+
+    <div class="results-wrap">
+      <p class="present-title" id="presentTitle"></p>
+/*LENS_RESULTS*/
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+/*LENS_JS*/
+</script>
+<script>
+(() => {
+'use strict';
+// 子どもに配るURL（この artifact のリンク）。先生画面は末尾に #teacher を付けたもの
+const STUDENT_URL = '/*STUDENT_URL*/';
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const views = ['boot', 'student', 'teacher'];
+const view = id => views.forEach(v => $('#' + v).hidden = v !== id);
+const boot = msg => { $('#bootMsg').textContent = msg; view('boot'); };
+const isTeacherView = location.hash === '#teacher';
+if (isTeacherView) document.title = 'ことばレンズ 先生';
+
+start().catch(err => { console.error(err); boot('読みこめませんでした。ページを開き直してください。'); });
+
+async function start(){
+  const use = window.claude?.use;
+  if (!use) { boot('このページは claude.ai で開いてください。'); return; }
+  const [db, user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
+  if (!db) { boot('この画面を使うには claude.ai にログインして、先生から共有されたリンクで開いてください。'); return; }
+  if (isTeacherView) {
+    if (!(await user?.canEdit())) { boot('この画面は先生だけが使えます。回答するときは、先生から配られたURL（末尾に #teacher が付かないもの）を開いてください。'); return; }
+    teacher(db);
+  } else {
+    student(db, user);
+  }
+}
+
+// ---------- 子ども ----------
+async function student(db, user){
+  const uid = await user?.id();
+  if (!uid) { boot('回答を送るには claude.ai へのログインが必要です。ログインしてから開き直してください。'); return; }
+  view('student');
+  const mine = db.doc('responses/' + uid);
+  let myItems = [], activeId = null, q = null, unsubQ = null, sending = false;
+
+  const answer = $('#answer');
+  const wait = msg => { $('#sWait').textContent = msg; $('#sWait').hidden = false; $('#form').hidden = true; $('#done').hidden = true; };
+  function render(){
+    if (!q) wait('まだ問いが出ていません。先生の合図を待ってください。（出ると自動で表示されます）');
+    else if (!q.open) wait(`「${q.title}」の受付は終わりました。`);
+    else {
+      $('#sTitle').textContent = q.title;
+      $('#sWait').hidden = true;
+      if ($('#form').hidden && $('#done').hidden) $('#form').hidden = false;
+    }
+    const list = q ? myItems.filter(i => i.qid === activeId) : [];
+    $('#mine').hidden = !list.length;
+    $('#mineList').innerHTML = list.map(i => `<li>${esc(i.text)}</li>`).join('');
+  }
+
+  mine.onSnapshot(s => { myItems = s.exists ? (s.data().items || []) : []; render(); }, () => {});
+  db.doc('config/state').onSnapshot(s => {
+    const id = s.exists ? s.data().activeQ || null : null;
+    if (id === activeId && unsubQ) return;
+    activeId = id; unsubQ?.(); unsubQ = null; q = null;
+    // 問いが切り替わったら入力画面から始める
+    $('#done').hidden = true; $('#form').hidden = true;
+    if (!id) { render(); return; }
+    unsubQ = db.doc('questions/' + id).onSnapshot(qs => { q = qs.exists ? qs.data() : null; render(); }, () => {});
+  }, () => boot('問いを読みこめませんでした。ページを開き直してください。'));
+
+  const update = () => {
+    $('#count').textContent = `${answer.value.length} / 1000`;
+    $('#send').disabled = sending || !answer.value.trim();
+  };
+  answer.addEventListener('input', update);
+
+  $('#form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const text = answer.value.trim().slice(0, 1000);
+    if (!text || !q?.open || sending) return;
+    sending = true; update(); $('#send').textContent = '送っています…'; $('#sendErr').hidden = true;
+    const item = {id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7), qid: activeId, text, at: Date.now()};
+    try {
+      await mine.set({items: [...myItems, item]});
+      answer.value = '';
+      $('#form').hidden = true; $('#done').hidden = false;
+    } catch (err) {
+      $('#sendErr').textContent = err?.code === 'invalid_argument'
+        ? 'このページで回答を送る権限がありません。先生に、このページを「コントリビューター」以上で共有してもらってください。'
+        : err?.code === 'quota_exceeded'
+          ? '回答がいっぱいで、これ以上送れません。先生に知らせてください。'
+          : '送れませんでした。通信のようすを確かめて、もう一度「送る」を押してください。';
+      $('#sendErr').hidden = false;
+    } finally {
+      sending = false; $('#send').textContent = '送る'; update();
+    }
+  });
+  $('#again').addEventListener('click', () => { $('#done').hidden = true; $('#form').hidden = false; answer.focus(); });
+}
+
+// ---------- 先生 ----------
+function teacher(db){
+  view('teacher');
+  KotobaLens.init({emptyMessage: 'まだ回答がありません。子どもに配るURLを開いてもらいましょう。'});
+  KotobaLens.setText('');
+
+  let questions = [], activeId = null, selected = null, all = [];
+  const cur = () => questions.find(q => q.id === selected) || null;
+
+  $('#qUrl').value = STUDENT_URL;
+  if (window.qrcode && STUDENT_URL.startsWith('https://')) {
+    const qr = qrcode(0, 'M'); qr.addData(STUDENT_URL); qr.make();
+    $('#qQr').innerHTML = qr.createSvgTag({cellSize: 4, margin: 2, scalable: true});
+  }
+
+  db.collection('questions').orderBy('createdAt', 'desc').onSnapshot(s => {
+    questions = s.docs.map(d => ({id: d.id, ...d.data()}));
+    if (!questions.some(q => q.id === selected)) selected = activeId && questions.some(q => q.id === activeId) ? activeId : questions[0]?.id ?? null;
+    renderQuestion();
+  }, () => KotobaLens.toast('問いを読みこめませんでした'));
+  db.doc('config/state').onSnapshot(s => {
+    activeId = s.exists ? s.data().activeQ || null : null;
+    if (!selected) selected = activeId;
+    renderQuestion();
+  }, () => {});
+  db.collection('responses').onSnapshot(s => {
+    all = s.docs.flatMap(d => (d.data().items || []).map(i => ({...i, key: d.id + '/' + i.id})));
+    renderResponses();
+  }, () => KotobaLens.toast('回答を読みこめませんでした'));
+
+  function renderQuestion(){
+    const sel = $('#qSelect');
+    sel.hidden = !questions.length;
+    sel.innerHTML = questions.map(q => `<option value="${esc(q.id)}">${q.id === activeId ? '▶ ' : ''}${esc(q.title)}${q.open ? '' : '（締め切り）'}</option>`).join('');
+    const q = cur();
+    $('#qHead').hidden = $('#respPanel').hidden = !q;
+    if (!q) { $('#presentTitle').textContent = ''; renderResponses(); return; }
+    sel.value = q.id;
+    $('#qTitleView').textContent = q.title;
+    $('#presentTitle').textContent = q.title;
+    const live = q.id === activeId;
+    $('#qLive').className = 'status ' + (live ? 'live' : 'closed');
+    $('#qLive').innerHTML = `<i></i>${live ? '子どもの画面に表示中' : '子どもの画面には出ていません'}`;
+    $('#qShow').hidden = live;
+    $('#qStatus').className = 'status ' + (q.open ? 'open' : 'closed');
+    $('#qStatus').innerHTML = `<i></i>${q.open ? '受付中' : '締め切り'}`;
+    $('#qToggle').textContent = q.open ? '締め切る' : '受付を再開';
+    renderResponses();
+  }
+
+  function renderResponses(){
+    const q = cur();
+    if (!q) { KotobaLens.setText(''); return; }
+    const hidden = new Set(q.hidden || []);
+    const rs = all.filter(i => i.qid === q.id).sort((a, b) => a.at - b.at);
+    const used = rs.filter(i => !hidden.has(i.key));
+    $('#respCount').textContent = hidden.size ? `${used.length} 件（外した回答 ${rs.length - used.length} 件）` : `${rs.length} 件`;
+    const fmt = t => new Date(t).toLocaleTimeString('ja-JP', {hour: '2-digit', minute: '2-digit'});
+    $('#respList').innerHTML = rs.length
+      ? rs.slice().reverse().map(i => `<li class="${hidden.has(i.key) ? 'off' : ''}"><time>${fmt(i.at)}</time><p>${esc(i.text)}</p><button type="button" data-hide="${esc(i.key)}">${hidden.has(i.key) ? '戻す' : '外す'}</button></li>`).join('')
+      : '<li><span></span><p class="note">まだ回答がありません。</p><span></span></li>';
+    // 1回答を1行にして解析エンジンへ渡す
+    const text = used.map(i => i.text.replace(/\s*\n+\s*/g, ' ')).join('\n');
+    if (text !== renderResponses.last) { renderResponses.last = text; KotobaLens.setText(text); }
+  }
+
+  const act = async (fn, failMsg) => { try { await fn(); } catch (err) { KotobaLens.toast(`${failMsg}（${err?.code || 'error'}）`); } };
+
+  $('#qSelect').addEventListener('change', e => { selected = e.target.value; renderQuestion(); });
+  $('#qNewForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const title = $('#qNew').value.trim().slice(0, 200);
+    if (!title) return;
+    const id = 'q' + Date.now().toString(36);
+    act(async () => {
+      await db.doc('questions/' + id).set({title, open: true, createdAt: Date.now(), hidden: []});
+      await db.doc('config/state').set({activeQ: id});
+      selected = id; $('#qNew').value = '';
+      KotobaLens.toast('子どもの画面に問いを出しました');
+    }, '問いを出せませんでした');
+  });
+  $('#qShow').addEventListener('click', () => { const q = cur(); if (q) act(() => db.doc('config/state').set({activeQ: q.id}), '切り替えられませんでした'); });
+  $('#qToggle').addEventListener('click', () => { const q = cur(); if (q) act(() => db.doc('questions/' + q.id).update({open: !q.open}), '切り替えられませんでした'); });
+  $('#respList').addEventListener('click', e => {
+    const b = e.target.closest('[data-hide]'); const q = cur();
+    if (!b || !q) return;
+    const set = new Set(q.hidden || []), k = b.dataset.hide;
+    set.has(k) ? set.delete(k) : set.add(k);
+    act(() => db.doc('questions/' + q.id).update({hidden: [...set]}), '変更できませんでした');
+  });
+  $('#qCopy').addEventListener('click', () => {
+    const inp = $('#qUrl');
+    try { navigator.clipboard.writeText(inp.value).then(() => KotobaLens.toast('URLをコピーしました'), () => { inp.focus(); inp.select(); }); }
+    catch (_) { inp.focus(); inp.select(); }
+  });
+  $('#present').addEventListener('click', () => {
+    const on = document.body.classList.toggle('present');
+    $('#present').textContent = on ? '管理画面に戻る' : '大きく表示';
+    KotobaLens.renderActive();
+  });
+}
+})();
+</script>
