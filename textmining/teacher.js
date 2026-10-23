@@ -12,7 +12,7 @@ const store = {
   set(k, v){ try { localStorage.setItem(k, v); } catch (_) {} },
 };
 
-KotobaLens.init({emptyMessage: 'まだ回答がありません。子どもに配るURLを開いてもらいましょう。'});
+KotobaLens.init({defaultTab: 'cloud', emptyMessage: 'まだ回答がありません。子どもに配るURLを開いてもらいましょう。'});
 KotobaLens.setText('');
 
 if (!firebaseConfig.projectId) {

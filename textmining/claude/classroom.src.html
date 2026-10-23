@@ -254,7 +254,7 @@ async function student(db, user){
 // ---------- 先生 ----------
 function teacher(db){
   view('teacher');
-  KotobaLens.init({emptyMessage: 'まだ回答がありません。子どもに配るURLを開いてもらいましょう。'});
+  KotobaLens.init({defaultTab: 'cloud', emptyMessage: 'まだ回答がありません。子どもに配るURLを開いてもらいましょう。'});
   KotobaLens.setText('');
 
   let questions = [], activeId = null, selected = null, all = [];

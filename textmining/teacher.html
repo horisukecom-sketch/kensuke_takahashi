@@ -129,8 +129,8 @@ body.present .present-title{display:block}
       <div class="stats" id="stats"></div>
 
       <div class="tabs" role="tablist">
-        <button class="tab" role="tab" data-tab="freq" aria-selected="true">頻出語</button>
-        <button class="tab" role="tab" data-tab="cloud" aria-selected="false">ワードクラウド</button>
+        <button class="tab" role="tab" data-tab="cloud" aria-selected="true">ワードクラウド</button>
+        <button class="tab" role="tab" data-tab="freq" aria-selected="false">頻出語</button>
         <button class="tab" role="tab" data-tab="net" aria-selected="false">共起ネットワーク</button>
         <button class="tab" role="tab" data-tab="ngram" aria-selected="false">連続する語</button>
         <button class="tab" role="tab" data-tab="kwic" aria-selected="false">KWIC（文脈）</button>
@@ -155,7 +155,7 @@ body.present .present-title{display:block}
 
       <div class="view" id="v-cloud" role="tabpanel" hidden>
         <div class="view-head">
-          <p>文字の大きさが出現回数、色が語の文字種です。語を押すと文脈を表示します。</p>
+          <p>回答全体を1枚にまとめた図です。語を押すと、その語が使われた回答を表示します。</p>
           <div class="ctrl"><label>語数 <input type="range" id="cloudN" min="20" max="150" value="80"><output id="cloudNo">80</output></label></div>
         </div>
         <div class="legend" id="typeLegend"></div>

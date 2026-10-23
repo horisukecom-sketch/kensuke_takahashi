@@ -104,6 +104,9 @@ td.word button:hover, td.word button:focus-visible{color:var(--accent); border-b
 .chip{display:inline-flex; align-items:center; gap:5px; font-size:var(--fs-xs); color:var(--muted); white-space:nowrap}
 .chip i{width:9px; height:9px; border-radius:2px; display:inline-block}
 .legend{display:flex; flex-wrap:wrap; gap:6px 14px}
+.cloud-key{font-size:var(--fs-s); color:var(--muted)}
+.cloud-key b{font-family:var(--display); font-weight:900; font-size:1.35em; color:var(--accent)}
+.cloud-key small{font-size:.85em; color:var(--accent); opacity:.55}
 .canvas-box{border:1px solid var(--line); border-radius:var(--r); background:var(--surface); position:relative; min-width:0}
 canvas{display:block; max-width:100%}
 .canvas-box canvas{cursor:pointer}

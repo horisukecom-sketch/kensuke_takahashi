@@ -178,15 +178,28 @@ function renderCloud(){
   cloudHits = [];
   if (!words.length) { canvasEmpty(ctx, w, h, '表示できる語がありません'); return; }
   const maxN = words[0].n, minN = words[words.length - 1].n;
-  const maxS = Math.min(64 * canvasScale(), w / 7), minS = Math.max(11, maxS / 5.5);
-  const font = css('--display');
+  // よく出た語ほど大きく濃く、少ない語ほど小さく薄く（出現回数に比例）
+  const maxS = Math.min(96 * canvasScale(), w / 5.5), minS = Math.max(12, maxS / 7);
+  const ratio = n => (n - minN) / ((maxN - minN) || 1);
+  const font = css('--display'), accent = css('--accent');
+  $('#typeLegend').innerHTML = `<span class="cloud-key"><b>よく出た語</b>ほど大きく濃く、<small>少ない語</small>ほど小さく薄く表示しています（最多 ${maxN} 回・最少 ${minN} 回）。語にカーソルを合わせると回数が出ます。</span>`;
   ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
   const placed = [];
   const overlaps = b => placed.some(p => b.x < p.x + p.w && b.x + b.w > p.x && b.y < p.y + p.h && b.y + b.h > p.y);
-  for (const r of words) {
-    const size = minS + (maxS - minS) * Math.sqrt((r.n - minN) / ((maxN - minN) || 1));
-    ctx.font = `${r.n === maxN ? 900 : 700} ${size.toFixed(1)}px ${font}`;
-    const tw = ctx.measureText(r.w).width, th = size * 1.05, pad = 3;
+  // 語の面積の合計が枠の約3割になるよう全体を拡大・縮小する（語が少ないときも枠いっぱいに広げる）
+  const ks = words.map(r => maxN === minN ? 0.5 : ratio(r.n));
+  const measure = (r, k, f) => {
+    const size = (minS + (maxS - minS) * k) * f;
+    ctx.font = `${k >= 0.5 ? 900 : 700} ${size.toFixed(1)}px ${font}`;
+    return {size, tw: ctx.measureText(r.w).width};
+  };
+  const area = words.reduce((sum, r, i) => { const m = measure(r, ks[i], 1); return sum + m.tw * m.size * 1.05; }, 0);
+  const top = measure(words[0], ks[0], 1);
+  const f = Math.max(0.6, Math.min(Math.sqrt(0.3 * w * h / (area || 1)), 3, w * 0.8 / top.tw, h * 0.4 / top.size));
+  words.forEach((r, i) => {
+    const k = ks[i];
+    const {size, tw} = measure(r, k, f);
+    const th = size * 1.05, pad = 3;
     let spot = null;
     for (let t = 0; t < 2400; t++) {
       const a = t * 0.31, rad = 1.6 * a;
@@ -196,12 +209,14 @@ function renderCloud(){
       const b = {x: x - pad, y: y - pad, w: tw + pad * 2, h: th + pad * 2};
       if (!overlaps(b)) { spot = {x, y, b}; break; }
     }
-    if (!spot) continue;
+    if (!spot) return;
     placed.push(spot.b);
-    ctx.fillStyle = css(TYPE_BY_ID[r.t].color);
+    ctx.fillStyle = accent;
+    ctx.globalAlpha = 0.38 + 0.62 * k;
     ctx.fillText(r.w, spot.x, spot.y + th / 2);
+    ctx.globalAlpha = 1;
     cloudHits.push({...spot.b, w0: r.w, n: r.n});
-  }
+  });
 }
 
 // ---------- 共起ネットワーク ----------
@@ -355,10 +370,14 @@ function init(opts = {}){
   const engine = $('#engine');
   if (engine) engine.textContent = segmenter ? '分割方式：ブラウザ内蔵の日本語単語分割' : '分割方式：文字種の切れ目（簡易）';
   $('#stop').value = STOP_DEFAULT;
-  $('#typeLegend').innerHTML = TYPES.map(t => chip(t.id)).join('');
 
   document.addEventListener('click', e => { const b = e.target.closest('[data-kwic]'); if (b) showKwic(b.dataset.kwic); });
   $('#kwicForm').addEventListener('submit', e => { e.preventDefault(); renderKwic($('#kwicQ').value); });
+  $('#cloud').addEventListener('mousemove', e => {
+    const p = pointer($('#cloud'), e);
+    const hit = cloudHits.find(b => p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h);
+    $('#cloud').title = hit ? `${hit.w0}：${hit.n} 回` : '';
+  });
   $('#cloud').addEventListener('click', e => {
     const p = pointer($('#cloud'), e);
     const hit = cloudHits.find(b => p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h);
@@ -396,6 +415,7 @@ function init(opts = {}){
   document.fonts?.ready.then(renderActive);
 
   const h = location.hash.slice(1);
+  if (opts.defaultTab) active = opts.defaultTab;
   if (['freq', 'cloud', 'net', 'ngram', 'kwic'].includes(h)) active = h;
   selectTab(active);
 }
